@@ -1,0 +1,43 @@
+
+__________                     ______                ______  
+___  ____/______ _____________ ___  /_ ______ ______ ___  /__
+__  /_    _  __ `/_  ___/_  _ \__  __ \_  __ \_  __ \__  //_/
+_  __/    / /_/ / / /__  /  __/_  /_/ // /_/ // /_/ /_  ,<   
+/_/       \__,_/  \___/  \___/ /_.___/ \____/ \____/ /_/|_|                                                               
+           ________                        
+           ___  __ \______ ________ ______ 
+           __  /_/ /_  __ `/__  __ `/_  _ \
+           _  ____/ / /_/ / _  /_/ / /  __/
+           /_/      \__,_/  _\__, /  \___/ 
+                            /____/         
+________                ______                   
+___  __ )______ ___________  /______  __________ 
+__  __  |_  __ `/_  ___/__  //_/_  / / /___  __ \
+_  /_/ / / /_/ / / /__  _  ,<   / /_/ / __  /_/ /
+/_____/  \__,_/  \___/  /_/|_|  \__,_/  _  .___/ 
+                                        /_/      
+
+
+ (c) 2012, Die Socialisten
+
+   Michael Kamleitner
+
+
+WARNING: This is not a user-tool, this is intended for developers!
+
+Right now, this tool ONLY backups the PHOTOS of a page!
+
+To use it, you'll have to:
+
+1) Create a Facebook-App at https://developers.facebook.com/apps
+2) Copy/Paste App-ID & -Secret to backup.php
+3) Copy/Paste the Page-ID of the page you want to backup 
+   (here's how to find out the page-ID: http://die.socialisten.at/2012/01/graphinspector-your-new-favorite-facebook-developer-bookmarklet/)
+
+Optional: Run the backup-script with a user that has admin-permissions on the page. Shouldn't make a difference since photos are all public, but who knows.
+
+4) Get a access-token for your new app at https://developers.facebook.com/tools/explorer, include "manage_pages"-permission!!!
+5) Copy/Paste the token to backup.php
+
+6) Ready: run backup.php from command line!
+
