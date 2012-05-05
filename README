@@ -34,7 +34,7 @@ To use it, you'll have to:
 3) Copy/Paste the Page-ID of the page you want to backup 
    (here's how to find out the page-ID: http://die.socialisten.at/2012/01/graphinspector-your-new-favorite-facebook-developer-bookmarklet/)
 
-Optional: Run the backup-script with a user that has admin-permissions on the page. Shouldn't make a difference since photos are all public, but who knows.
+Optional: Run the backup-script with a user that has admin-permissions on the page. Shouldn't make a difference since photos are all public, but who knows. This might be important f. geo- or age-restricted pages!
 
 4) Get a access-token for your new app at https://developers.facebook.com/tools/explorer, include "manage_pages"-permission!!!
 5) Copy/Paste the token to backup.php

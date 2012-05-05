@@ -2,15 +2,15 @@
 
 // Go to https://developers.facebook.com/apps to create our app & copy/paste APP_ID & APP_SECret
 
-define("PAGE_ID", 44902596242); // The Page you want to backup
-define("APP_ID", "428789773798154"); // The App-Secret
-define("APP_SECRET", "3b0fb0f21b46d92dab6c4677894750ec"); // The App-Secret
+define("PAGE_ID", "*************"); // The Page you want to backup
+define("APP_ID", "*************"); // The App-Secret
+define("APP_SECRET", "*************"); // The App-Secret
 
 // Optional: Run script as user with admin-permissions, shouldnt make a difference, since photos are all public, 
 // but might be important f. geo- or age-restricted pages nonetheless! Go to http://developers.facebook.com/tools/explorer to 
 // get your access-token with "manage_pages"-permission
 
-//define("ACCESS_TOKEN", "AAAGFZB2YmiwoBABF5vNHoAY2xBRBxp4tmvH2Maf1Gz0awWkFOeWs7OJdehDKnuYaUF5tb8ZANdtBWG0KJEqmZAcGFtB1S3WnqFLDVDdiQZDZD");
+//define("ACCESS_TOKEN", "*************");
 
 include_once("facebook/facebook.php");
 
