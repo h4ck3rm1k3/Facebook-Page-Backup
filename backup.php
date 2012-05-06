@@ -2,15 +2,15 @@
 
 // Go to https://developers.facebook.com/apps to create our app & copy/paste APP_ID & APP_SECret
 
-define("PAGE_ID", "*************"); // The Page you want to backup
-define("APP_ID", "*************"); // The App-Secret
-define("APP_SECRET", "*************"); // The App-Secret
+define("PAGE_ID", "**********"); // The Page you want to backup
+define("APP_ID", "**********"); // The App-Secret
+define("APP_SECRET", "********************"); // The App-Secret
 
 // Optional: Run script as user with admin-permissions, shouldnt make a difference, since photos are all public, 
 // but might be important f. geo- or age-restricted pages nonetheless! Go to http://developers.facebook.com/tools/explorer to 
 // get your access-token with "manage_pages"-permission
 
-define("ACCESS_TOKEN", "*************");
+define("ACCESS_TOKEN", "************************************************************");
 
 include_once("facebook/facebook.php");
 include_once("tools.php");
@@ -43,42 +43,53 @@ mkdir ($backup_dir);
 // Get Albums of Page
 $album_count = 0;
 $photo_count = 0;
+$error_count = 0;
 $albums = $facebook->api("/".PAGE_ID."/albums?access_token=".@$p["access_token"]);
-foreach ($albums["data"] as $album) {
 
-  // Create a sub-dir f. album
-  $album_dir = $backup_dir."/".$album["name"];
-  mkdir($album_dir);
-  $album_count++;
+while (@$albums["data"]) {
+  foreach ($albums["data"] as $album) {
 
-  $photos = $facebook->api("/".$album["id"]."/photos?access_token=".@$p["access_token"]);
-  while (@$photos["data"]) {
-    foreach (@$photos["data"] as $photo) {
-      if (@$photo["source"]) {
-        $ext = substr($photo["source"],strrpos($photo["source"],"."));
-        $photo_filename = $album_dir."/".$photo["id"]."-".date("Ymd-Hmi",strtotime($photo["created_time"])).(@$photo["name"]?"-".$photo["name"]:"").$ext;
-        if ($raw = curl($photo["source"])) {
-          if (file_put_contents($photo_filename, $raw)) {
-            print $photo_filename." (".$photo["width"]."x".$photo["height"].")\n";
+    // Create a sub-dir f. album
+    $album_dir = $backup_dir."/".$album["name"];
+    @mkdir($album_dir);
+    $album_count++;
+
+    $photos = $facebook->api("/".$album["id"]."/photos?access_token=".@$p["access_token"]);
+    while (@$photos["data"]) {
+      foreach (@$photos["data"] as $photo) {
+        if (@$photo["source"]) {
+          $ext = substr($photo["source"],strrpos($photo["source"],"."));
+          $photo_filename = $album_dir."/".$photo["id"]."-".date("Ymd-Hmi",strtotime($photo["created_time"])).$ext;
+          if ($raw = curl($photo["source"])) {
+            if (file_put_contents($photo_filename, $raw)) {
+              print $photo_filename." (".$photo["width"]."x".$photo["height"].")\n";
+            } else {
+              print "ERROR: Failed to write ".$photo_filename."\n";
+              $error_count++;
+            }
           } else {
-            print "ERROR: Failed to write ".$photo_filename."\n";
+            print "ERROR: Failed to download ".$photo["source"]."\n";
+            $error_count++;
           }
-        } else {
-          print "ERROR: Failed to download ".$photo["source"]."\n";
+          $photo_count++;
         }
-        $photo_count++;
+      }
+
+      if (@$photos["paging"]["next"]) {      
+        $photos = $facebook->api(str_replace("https://graph.facebook.com","",$photos["paging"]["next"]));      
+      } else {
+        $photos = null;
       }
     }
-
-    if (@$photos["paging"]["next"]) {      
-      $photos = $facebook->api(str_replace("https://graph.facebook.com","",$photos["paging"]["next"]));      
-    } else {
-      $photos = null;
-    }
+  }
+  if (@$albums["paging"]["next"]) {      
+    $albums = $facebook->api(str_replace("https://graph.facebook.com","",$albums["paging"]["next"]));      
+  } else {
+    $albums = null;
   }
 }
 
-print "\nStored ".$album_count." with ".$photo_count." Photos!\n\n";
+print "\nStored ".$album_count." with ".$photo_count." Photos (".$error_count." Errors)!\n\n";
 @die;
 
 ?>
