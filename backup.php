@@ -10,11 +10,10 @@ define("APP_SECRET", "*************"); // The App-Secret
 // but might be important f. geo- or age-restricted pages nonetheless! Go to http://developers.facebook.com/tools/explorer to 
 // get your access-token with "manage_pages"-permission
 
-//define("ACCESS_TOKEN", "*************");
+define("ACCESS_TOKEN", "*************");
 
 include_once("facebook/facebook.php");
-
-include_once("facebook/facebook.php");
+include_once("tools.php");
 
 $facebook = new Facebook(array("appId" => APP_ID, "secret" => APP_SECRET, "cookie" => true));
 
@@ -29,6 +28,7 @@ if (defined(@ACCESS_TOKEN)) {
   foreach ($pages["data"] as $p) {
     if ($p["id"] == PAGE_ID) {
       $page = $p;
+      break;
     }
   }
 
@@ -54,12 +54,20 @@ foreach ($albums["data"] as $album) {
   $photos = $facebook->api("/".$album["id"]."/photos?access_token=".@$p["access_token"]);
   while (@$photos["data"]) {
     foreach (@$photos["data"] as $photo) {
-
-      $ext = substr($photo["source"],strrpos($photo["source"],"."));
-      $photo_filename = $album_dir."/".$photo["id"]."-".date("Ymd-Hmi",strtotime($photo["created_time"])).$ext;
-      file_put_contents($photo_filename, file_get_contents($photo["source"]));
-      print $photo_filename." (".$photo["width"]."x".$photo["height"].")\n";
-      $photo_count++;
+      if (@$photo["source"]) {
+        $ext = substr($photo["source"],strrpos($photo["source"],"."));
+        $photo_filename = $album_dir."/".$photo["id"]."-".date("Ymd-Hmi",strtotime($photo["created_time"])).(@$photo["name"]?"-".$photo["name"]:"").$ext;
+        if ($raw = curl($photo["source"])) {
+          if (file_put_contents($photo_filename, $raw)) {
+            print $photo_filename." (".$photo["width"]."x".$photo["height"].")\n";
+          } else {
+            print "ERROR: Failed to write ".$photo_filename."\n";
+          }
+        } else {
+          print "ERROR: Failed to download ".$photo["source"]."\n";
+        }
+        $photo_count++;
+      }
     }
 
     if (@$photos["paging"]["next"]) {      
