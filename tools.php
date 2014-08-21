@@ -1,4 +1,4 @@
-<? 
+<?php
 // Facebook Programmierung - Galileo Verlag, Michael Kamleitner
 // Weitere Informationen sowie Aktualisierungen zu diesem Code-Beispiel finden Sie unter http://book.socialisten.at
 // Tools.php - Eine Sammlung an nützlichen Funktionen für die Anwendungs-Entwicklung auf Facebook
